@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gateway-man
+
+
+server:
+  port: 8888
