@@ -2,6 +2,17 @@ spring:
   application:
     name: gateway-man
 
-
 server:
   port: 8888
+
+
+# ?????????:https://github.com/ipipman/registry-man
+registry-ipman:
+  enabled: true
+  servers: http://localhost:8484
+
+
+logging:
+  level:
+    root: error
+    cn.ipman: debug

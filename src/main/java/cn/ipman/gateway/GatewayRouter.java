@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 /**
@@ -30,6 +31,6 @@ public class GatewayRouter {
 
     @Bean
     public RouterFunction<?> gwRouterFunction() {
-        return route(GET("/gw"), gatewayHandler::handler);
+        return route(GET("/gw").or(POST("/gw/**")), gatewayHandler::handler);
     }
 }
