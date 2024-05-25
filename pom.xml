@@ -26,6 +26,12 @@
 			<groupId>io.github.ipipman</groupId>
 			<artifactId>rpcman-core</artifactId>
 			<version>0.0.6-RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

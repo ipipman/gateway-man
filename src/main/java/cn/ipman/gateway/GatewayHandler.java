@@ -3,7 +3,6 @@ package cn.ipman.gateway;
 import cn.ipman.rpc.core.api.RegistryCenter;
 import cn.ipman.rpc.core.meta.InstanceMeta;
 import cn.ipman.rpc.core.meta.ServiceMeta;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -28,20 +27,23 @@ public class GatewayHandler {
 
     Mono<ServerResponse> handler(ServerRequest request) {
         // 1. 通过请求路径获取服务名
-        String service = request.path().substring(1);
+        String service = request.path().substring(4);
         ServiceMeta serviceMeta = ServiceMeta.builder()
+                .name(service)
                 .app("app1")
                 .env("dev")
                 .namespace("public")
-                .name(service)
+                .version("1.0")
                 .build();
         // 2. 通过注册中心, 拿到所有有效的服务实例
         List<InstanceMeta> instanceMetas = rc.fetchAll(serviceMeta);
         // 3. 先简化处理, 拿到第一个实例的url
         String url = instanceMetas.get(0).toHttpUrl();
+        System.out.println(url);
 
         // 4. 拿到请求的报文
         Mono<String> requestMono = request.bodyToMono(String.class);
+        System.out.println(requestMono);
 
         // 5. 通过webclient 发送post请求
         WebClient client = WebClient.create(url);
@@ -50,6 +52,7 @@ public class GatewayHandler {
                 .body(requestMono, String.class)
                 .retrieve()
                 .toEntity(String.class);
+
 
         // 6. 通过entity 获取响应报文
         Mono<String> body = entity.mapNotNull(ResponseEntity::getBody);
