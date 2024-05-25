@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 /**
@@ -34,6 +35,12 @@ public class HelloHandler {
                 .retrieve()
                 .toEntity(String.class);
 
-        return ServerResponse.ok().body(entity.mapNotNull(ResponseEntity::getBody), String.class);
+        Mono<String> body = entity.mapNotNull(ResponseEntity::getBody);
+        body.subscribe(source -> System.out.println("response:" + source));
+
+        return ServerResponse.ok()
+                .header("Content-Type", "application/json")
+                .header("ipman.gw.version", "v1.0.0")
+                .body(body, String.class);
     }
 }
