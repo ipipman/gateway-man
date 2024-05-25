@@ -1,10 +1,9 @@
 package cn.ipman.gateway;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -18,10 +17,19 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Component
 public class GatewayRouter {
 
+    @Autowired
+    private HelloHandler helloHandler;
+
+    @Autowired
+    private GatewayHandler gatewayHandler;
+
     @Bean
     public RouterFunction<?> helloRouterFunction() {
-        return route(GET("/hello"),
-                request -> ServerResponse.ok()
-                        .body(Mono.just("hello, gateway"), String.class));
+        return route(GET("/hello"), helloHandler::handler);
+    }
+
+    @Bean
+    public RouterFunction<?> gwRouterFunction() {
+        return route(GET("/gw"), gatewayHandler::handler);
     }
 }

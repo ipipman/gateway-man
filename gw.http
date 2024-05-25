@@ -1,2 +1,5 @@
 ### GET hello world
 GET  http://localhost:8888/hello
+
+### GET gateway
+GET  http://localhost:8888/gw
