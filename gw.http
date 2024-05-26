@@ -16,6 +16,16 @@ Content-Type: application/json
 }
 
 
+### POST user ga mock
+POST http://localhost:8888/ga/cn.ipman.rpc.demo.api.UserService?mock=true
+Content-Type: application/json
+
+{
+  "service": "cn.ipman.rpc.demo.api.UserService",
+  "methodSign": "findById@1_int",
+  "args": [100]
+}
+
 ### POST user ga
 POST http://localhost:8888/ga/cn.ipman.rpc.demo.api.UserService
 Content-Type: application/json
