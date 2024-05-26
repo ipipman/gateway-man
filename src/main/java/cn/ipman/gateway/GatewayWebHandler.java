@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * gateway web handler
+ * Gateway Web Handler，负责处理网关的请求转发逻辑
  *
  * @Author IpMan
  * @Date 2024/5/26 07:18
@@ -27,24 +27,28 @@ import java.util.List;
 @Component("gatewayWebHandler")
 public class GatewayWebHandler implements WebHandler {
 
-
+    // 注册中心，用于获取服务实例信息
     @Autowired
     RegistryCenter rc;
 
+    // 负载均衡器，用于选择服务实例
     LoadBalancer<InstanceMeta> loadBalancer = new RoundRibonLoadBalancer<>();
 
+    /**
+     * 处理客户端请求，实现请求的转发。
+     *
+     * @param exchange 服务器与客户端之间的交互接口，包含请求和响应信息。
+     * @return 返回一个Mono<Void>，表示异步处理完成。
+     */
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange) {
+    public @NotNull Mono<Void> handle(ServerWebExchange exchange) {
         System.out.println("===>>> IpMan Gateway web handler ...");
 
         // 1. 通过请求路径获取服务名
         String service = exchange.getRequest().getPath().value().substring(4);
         ServiceMeta serviceMeta = ServiceMeta.builder()
                 .name(service)
-                .app("app1")
-                .env("dev")
-                .namespace("public")
-                .version("1.0")
+                .app("app1").env("dev").namespace("public").version("1.0")
                 .build();
 
         // 2. 通过注册中心, 拿到所有有效的服务实例
@@ -69,7 +73,6 @@ public class GatewayWebHandler implements WebHandler {
 
         // 6. 通过entity 获取响应报文
         Mono<String> body = entity.mapNotNull(ResponseEntity::getBody);
-        // body.subscribe(source -> System.out.println("response:" + source));
 
         // 7. 组装响应报文
         exchange.getResponse().getHeaders().add("Content-Type", "application/json");
