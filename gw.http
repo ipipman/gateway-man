@@ -14,3 +14,8 @@ Content-Type: application/json
   "methodSign": "findById@1_int",
   "args": [100]
 }
+
+
+### GET ga aa
+GET  http://localhost:8888/ga/aaa
+
