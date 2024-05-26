@@ -16,6 +16,12 @@ Content-Type: application/json
 }
 
 
-### GET ga aa
-GET  http://localhost:8888/ga/aaa
+### POST user ga
+POST http://localhost:8888/ga/cn.ipman.rpc.demo.api.UserService
+Content-Type: application/json
 
+{
+  "service": "cn.ipman.rpc.demo.api.UserService",
+  "methodSign": "findById@1_int",
+  "args": [100]
+}
