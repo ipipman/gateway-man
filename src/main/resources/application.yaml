@@ -6,9 +6,17 @@ server:
   port: 8888
 
 
-# ?????????:https://github.com/ipipman/registry-man
+rpcman:
+  #providers: http://localhost:8080,http://localhost:8081,http://localhost:8082
+  zk:
+    enabled: true
+    zkServer: localhost:2181
+    zkRoot: rpcman
+
+
+# registry-man @linkUrl: https://github.com/ipipman/registry-man
 registry-ipman:
-  enabled: true
+  enabled: false
   servers: http://localhost:8484
 
 

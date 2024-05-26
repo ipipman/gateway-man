@@ -2,8 +2,10 @@ package cn.ipman.gateway.config;
 
 import cn.ipman.rpc.core.api.RegistryCenter;
 import cn.ipman.rpc.core.registry.ipman.IpManRegistryCenter;
+import cn.ipman.rpc.core.registry.zk.ZkRegistryCenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -22,14 +24,24 @@ import java.util.Properties;
 public class GatewayConfig {
 
     /**
-     * 根据属性配置创建注册中心实例。
-     * 仅当registry-ipman.enabled属性为true时，该配置生效。
-     *
-     * @return 返回IpManRegistryCenter的实例，用于服务的注册与发现。
+     * 创建注册中心实例，默认为ZkRegistryCenter。
+     * @return RegistryCenter 注册中心实例
+     */
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "rpcman.zk", value = "enabled", havingValue = "true")
+    public RegistryCenter zkRc() {
+        return new ZkRegistryCenter();
+    }
+
+
+    /**
+     * 创建注册中心实例，registry-man, @linkUrl: <a href="https://github.com/ipipman/registry-man">...</a>
+     * @return RegistryCenter 注册中心实例
      */
     @Bean(initMethod = "start", destroyMethod = "stop")
     @ConditionalOnProperty(prefix = "registry-ipman", value = "enabled", havingValue = "true")
-    public RegistryCenter rc() {
+    public RegistryCenter ipManRc() {
         return new IpManRegistryCenter();
     }
 
