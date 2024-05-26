@@ -1,4 +1,4 @@
-package cn.ipman.gateway;
+package cn.ipman.gateway.config;
 
 import cn.ipman.rpc.core.api.RegistryCenter;
 import cn.ipman.rpc.core.registry.ipman.IpManRegistryCenter;

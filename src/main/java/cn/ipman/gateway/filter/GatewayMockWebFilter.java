@@ -1,4 +1,4 @@
-package cn.ipman.gateway;
+package cn.ipman.gateway.filter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * @Date 2024/5/26 09:53
  */
 @Component
-public class GatewayWebFilter implements WebFilter {
+public class GatewayMockWebFilter implements WebFilter {
 
 
     /**

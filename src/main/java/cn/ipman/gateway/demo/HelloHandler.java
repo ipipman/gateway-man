@@ -1,4 +1,4 @@
-package cn.ipman.gateway;
+package cn.ipman.gateway.demo;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

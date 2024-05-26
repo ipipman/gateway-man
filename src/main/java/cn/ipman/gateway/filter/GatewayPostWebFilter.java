@@ -1,4 +1,4 @@
-package cn.ipman.gateway;
+package cn.ipman.gateway.filter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
