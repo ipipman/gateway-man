@@ -21,3 +21,14 @@ Content-Type: application/json
   "methodSign": "findById@1_int",
   "args": [100]
 }
+
+
+### POST gateway demo
+POST http://localhost:8889/rpcman
+Content-Type: application/json
+
+{
+  "service": "cn.ipman.rpc.demo.api.UserService",
+  "methodSign": "findById@1_int",
+  "args": [100]
+}
