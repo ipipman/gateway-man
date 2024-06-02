@@ -38,5 +38,4 @@ public abstract class AbstractGatewayPlugin implements GatewayPlugin {
     public abstract boolean doSupport(ServerWebExchange exchange);
 
 
-
 }

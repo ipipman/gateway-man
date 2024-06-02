@@ -14,6 +14,8 @@ import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 
 import java.util.Properties;
 
+import static cn.ipman.gateway.GatewayPlugin.GATEWAY_PREFIX;
+
 /**
  * 网关配置类，用于配置注册中心和应用启动时的处理器映射。
  *
@@ -59,7 +61,7 @@ public class GatewayConfig {
             // 获取SimpleUrlHandlerMapping实例，并设置路径到处理器的映射
             SimpleUrlHandlerMapping handlerMapping = context.getBean(SimpleUrlHandlerMapping.class);
             Properties mappings = new Properties();
-            mappings.put("/ga/**", "gatewayWebHandler");
+            mappings.put(GATEWAY_PREFIX + "/**", "gatewayWebHandler");
             handlerMapping.setMappings(mappings);
             handlerMapping.initApplicationContext();
             System.out.println("GatewayConfig.runner");

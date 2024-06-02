@@ -26,7 +26,7 @@ public class GatewayMockWebFilter implements WebFilter {
      */
     @Override
     public @NotNull Mono<Void> filter(ServerWebExchange exchange, @NotNull WebFilterChain chain) {
-        System.out.println("===>>> IpMan Gateway web filter ...");
+        System.out.println(" =====>>>> IpMan Gateway web filter ...");
         // 检查请求参数中是否含有"mock"，若无则正常处理请求
         if (exchange.getRequest().getQueryParams().getFirst("mock") == null) {
             return chain.filter(exchange);
