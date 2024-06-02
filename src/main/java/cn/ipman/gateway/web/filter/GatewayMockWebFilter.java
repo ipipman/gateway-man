@@ -20,7 +20,7 @@ public class GatewayMockWebFilter implements WebFilter {
     /**
      * 对通过网关的每个请求进行过滤处理。
      *
-     * @param exchange 代表当前服务器和客户端之间交互的请求-响应周期。
+     * @param exchange 代表当前服务器和客户端之间交互 请求-响应周期。
      * @param chain 提供了继续或终止过滤链的能力。
      * @return 返回一个Mono<Void>，表示异步处理完成。
      */

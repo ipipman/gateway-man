@@ -1,6 +1,7 @@
 package cn.ipman.gateway.web.handler;
 
-import cn.ipman.gateway.chain.impl.DefaultGatewayPluginChain;
+import cn.ipman.gateway.chain.DefaultGatewayPluginChain;
+import cn.ipman.gateway.filter.GatewayFilter;
 import cn.ipman.gateway.plugin.GatewayPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,9 @@ public class GatewayWebHandler implements WebHandler {
     @Autowired
     List<GatewayPlugin> plugins;
 
+    @Autowired
+    List<GatewayFilter> filters;
+
     /**
      * 处理客户端请求，实现请求的转发。
      *
@@ -39,23 +43,17 @@ public class GatewayWebHandler implements WebHandler {
             String mock = """
                     {"result": "no plugin"}
                     """;
+            exchange.getResponse().getHeaders().add("Content-Type", "application/json");
+            exchange.getResponse().getHeaders().add("ipman.gw.version", "v1.0.0");
             return exchange.getResponse()
                     .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(mock.getBytes())));
         }
 
+        // 执行过滤
+        for (GatewayFilter filter : filters) {
+            filter.filter(exchange);
+        }
         return new DefaultGatewayPluginChain(plugins).handle(exchange);
-
-//        for (GatewayPlugin plugin : plugins) {
-//            if (plugin.support(exchange)) {
-//                return plugin.handle(exchange);
-//            }
-//        }
-//
-//        String mock = """
-//                {"result": "no supported plugin"}
-//                """;
-//        return exchange.getResponse()
-//                .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(mock.getBytes())));
     }
 
 }

@@ -20,7 +20,7 @@ public class GatewayPostWebFilter implements WebFilter {
      * 对请求进行过滤处理。
      * 在请求处理完成后，执行一些清理或记录日志的操作。
      *
-     * @param exchange 服务器web交换机，提供关于当前请求和响应的信息。
+     * @param exchange 服务器web change，提供关于当前请求和响应的信息。
      * @param chain    web过滤器链，用于将请求传递给下一个过滤器或处理程序。
      * @return Mono<Void> 表示异步处理完成的信号。
      */
