@@ -31,6 +31,7 @@ public class DirectPlugin extends AbstractGatewayPlugin {
 
         exchange.getResponse().getHeaders().add("Content-Type", "application/json");
         exchange.getResponse().getHeaders().add("ipman.gw.version", "v1.0.0");
+        exchange.getResponse().getHeaders().add("ipman.gw.plugin", NAME);
 
         if (backend == null || backend.isEmpty()){
             return requestBody.flatMap(x -> exchange.getResponse().writeWith(Mono.just(x))).then();
@@ -55,7 +56,9 @@ public class DirectPlugin extends AbstractGatewayPlugin {
 
     @Override
     public boolean doSupport(ServerWebExchange exchange) {
-        return exchange.getRequest().getPath().value().startsWith(prefix);
+        String path = exchange.getRequest().getPath().value();
+        return (path.startsWith(prefix) ||
+                removeLastChar(path, '/').equals(removeLastChar(path, '/')));
     }
 
     @Override

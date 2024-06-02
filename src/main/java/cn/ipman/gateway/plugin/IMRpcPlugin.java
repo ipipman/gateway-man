@@ -74,6 +74,7 @@ public class IMRpcPlugin extends AbstractGatewayPlugin {
         // 7. 组装响应报文
         exchange.getResponse().getHeaders().add("Content-Type", "application/json");
         exchange.getResponse().getHeaders().add("ipman.gw.version", "v1.0.0");
+        exchange.getResponse().getHeaders().add("ipman.gw.plugin", NAME);
         return body.flatMap(x -> exchange.getResponse()
                 .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(x.getBytes()))));
 
@@ -81,7 +82,9 @@ public class IMRpcPlugin extends AbstractGatewayPlugin {
 
     @Override
     public boolean doSupport(ServerWebExchange exchange) {
-        return exchange.getRequest().getPath().value().startsWith(prefix);
+        String path = exchange.getRequest().getPath().value();
+        return (path.startsWith(prefix) ||
+                removeLastChar(path, '/').equals(removeLastChar(path, '/')));
     }
 
     @Override

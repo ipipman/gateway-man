@@ -37,5 +37,10 @@ public abstract class AbstractGatewayPlugin implements GatewayPlugin {
 
     public abstract boolean doSupport(ServerWebExchange exchange);
 
-
+    public String removeLastChar(String str, char lastChar) {
+        if (str.endsWith(String.valueOf(lastChar))) {
+            return str.substring(0, str.length() - 1);
+        }
+        return str;
+    }
 }
