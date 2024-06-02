@@ -54,6 +54,7 @@ public class IMRpcPlugin extends AbstractGatewayPlugin {
         System.out.println("instanceMetas -> " + instanceMetas);
         InstanceMeta instanceMeta = loadBalancer.choose(instanceMetas);
         String url = instanceMeta.toHttpUrl();
+        System.out.println("loadBalance to url -> " + url);
         System.out.println("loadBalance to instanceMeta -> " + instanceMeta);
 
         // 4. 拿到请求的报文

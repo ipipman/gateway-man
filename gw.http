@@ -13,7 +13,7 @@ Content-Type: application/json
 
 
 ### POST gateway direct
-POST http://localhost:8888/gw/direct/cn.ipman.rpc.demo.api.UserService
+POST http://localhost:8888/gw/direct/?backend=http://192.168.31.232:9081/rpcman
 Content-Type: application/json
 
 {
