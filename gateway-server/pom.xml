@@ -4,22 +4,19 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>cn.ipman</groupId>
+		<groupId>io.github.ipipman</groupId>
 		<artifactId>gateway-man</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${gatewayman.version}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>gateway-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${gatewayman.version}</version>
 
 	<name>gateway-server</name>
 	<description>gateway-server</description>
 	<packaging>jar</packaging>
 
-	<properties>
-		<java.version>17</java.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -52,6 +49,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--	webflux test	-->
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
@@ -59,9 +57,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>cn.ipman</groupId>
+			<groupId>io.github.ipipman</groupId>
 			<artifactId>gateway-demo</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${gatewayman.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -75,6 +73,13 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<version>0.8.7</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -115,6 +120,26 @@
 						<version>3.2.3</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

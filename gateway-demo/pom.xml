@@ -3,21 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.ipman</groupId>
+        <groupId>io.github.ipipman</groupId>
         <artifactId>gateway-man</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${gatewayman.version}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>gateway-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${gatewayman.version}</version>
     <name>gateway-demo</name>
+
     <description>gateway-demo</description>
     <packaging>jar</packaging>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
