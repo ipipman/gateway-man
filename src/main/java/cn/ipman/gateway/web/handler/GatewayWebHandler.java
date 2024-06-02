@@ -1,4 +1,4 @@
-package cn.ipman.gateway.handler;
+package cn.ipman.gateway.web.handler;
 
 import cn.ipman.rpc.core.api.LoadBalancer;
 import cn.ipman.rpc.core.api.RegistryCenter;
