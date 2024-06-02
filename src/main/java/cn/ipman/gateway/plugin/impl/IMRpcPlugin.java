@@ -1,6 +1,7 @@
-package cn.ipman.gateway.plugin;
+package cn.ipman.gateway.plugin.impl;
 
-import cn.ipman.gateway.AbstractGatewayPlugin;
+import cn.ipman.gateway.chain.GatewayPluginChain;
+import cn.ipman.gateway.plugin.AbstractGatewayPlugin;
 import cn.ipman.rpc.core.api.LoadBalancer;
 import cn.ipman.rpc.core.api.RegistryCenter;
 import cn.ipman.rpc.core.cluster.RoundRibonLoadBalancer;
@@ -37,7 +38,7 @@ public class IMRpcPlugin extends AbstractGatewayPlugin {
     LoadBalancer<InstanceMeta> loadBalancer = new RoundRibonLoadBalancer<>();
 
     @Override
-    public Mono<Void> doHandle(ServerWebExchange exchange) {
+    public Mono<Void> doHandle(ServerWebExchange exchange, GatewayPluginChain chain) {
         System.out.println(" =====>>>> [IpMan RPC Plugin] IpMan Gateway web handler ...");
 
         // 1. 通过请求路径获取服务名
@@ -76,7 +77,8 @@ public class IMRpcPlugin extends AbstractGatewayPlugin {
         exchange.getResponse().getHeaders().add("ipman.gw.version", "v1.0.0");
         exchange.getResponse().getHeaders().add("ipman.gw.plugin", NAME);
         return body.flatMap(x -> exchange.getResponse()
-                .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(x.getBytes()))));
+                .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(x.getBytes()))))
+                .then(chain.handle(exchange));
 
     }
 
@@ -84,7 +86,7 @@ public class IMRpcPlugin extends AbstractGatewayPlugin {
     public boolean doSupport(ServerWebExchange exchange) {
         String path = exchange.getRequest().getPath().value();
         return (path.startsWith(prefix) ||
-                removeLastChar(path, '/').equals(removeLastChar(path, '/')));
+                removeLastChar(prefix, '/').equals(removeLastChar(path, '/')));
     }
 
     @Override

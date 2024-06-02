@@ -14,7 +14,7 @@ import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 
 import java.util.Properties;
 
-import static cn.ipman.gateway.GatewayPlugin.GATEWAY_PREFIX;
+import static cn.ipman.gateway.plugin.GatewayPlugin.GATEWAY_PREFIX;
 
 /**
  * 网关配置类，用于配置注册中心和应用启动时的处理器映射。

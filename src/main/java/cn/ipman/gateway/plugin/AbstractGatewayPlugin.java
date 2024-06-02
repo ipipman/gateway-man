@@ -1,5 +1,6 @@
-package cn.ipman.gateway;
+package cn.ipman.gateway.plugin;
 
+import cn.ipman.gateway.chain.GatewayPluginChain;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -22,10 +23,10 @@ public abstract class AbstractGatewayPlugin implements GatewayPlugin {
     }
 
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange) {
+    public Mono<Void> handle(ServerWebExchange exchange, GatewayPluginChain chain) {
         boolean isSupported = support(exchange);
         System.out.println(" =====>>>> plugin[" + this.getName() + "], support=" + isSupported);
-        return isSupported ? doHandle(exchange) : Mono.empty();
+        return isSupported ? doHandle(exchange, chain) : chain.handle(exchange);
     }
 
     @Override
@@ -33,7 +34,7 @@ public abstract class AbstractGatewayPlugin implements GatewayPlugin {
         return doSupport(exchange);
     }
 
-    public abstract Mono<Void> doHandle(ServerWebExchange exchange);
+    public abstract Mono<Void> doHandle(ServerWebExchange exchange, GatewayPluginChain chain);
 
     public abstract boolean doSupport(ServerWebExchange exchange);
 

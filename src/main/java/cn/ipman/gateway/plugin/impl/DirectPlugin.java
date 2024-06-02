@@ -1,7 +1,7 @@
-package cn.ipman.gateway.plugin;
+package cn.ipman.gateway.plugin.impl;
 
-import cn.ipman.gateway.AbstractGatewayPlugin;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import cn.ipman.gateway.chain.GatewayPluginChain;
+import cn.ipman.gateway.plugin.AbstractGatewayPlugin;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class DirectPlugin extends AbstractGatewayPlugin {
     private static final String prefix = GATEWAY_PREFIX + "/" + NAME + "/";
 
     @Override
-    public Mono<Void> doHandle(ServerWebExchange exchange) {
+    public Mono<Void> doHandle(ServerWebExchange exchange, GatewayPluginChain chain) {
         System.out.println(" =====>>>> [Direct Plugin] IpMan Gateway web handler ...");
         String backend = exchange.getRequest().getQueryParams().getFirst("backend");
         Flux<DataBuffer> requestBody = exchange.getRequest().getBody();
@@ -34,7 +34,8 @@ public class DirectPlugin extends AbstractGatewayPlugin {
         exchange.getResponse().getHeaders().add("ipman.gw.plugin", NAME);
 
         if (backend == null || backend.isEmpty()){
-            return requestBody.flatMap(x -> exchange.getResponse().writeWith(Mono.just(x))).then();
+            return requestBody.flatMap(x -> exchange.getResponse().writeWith(Mono.just(x)))
+                    .then(chain.handle(exchange));
         }
 
         // 5. 通过webclient 发送post请求
@@ -50,7 +51,8 @@ public class DirectPlugin extends AbstractGatewayPlugin {
 
         // 7. 组装响应报文
         return body.flatMap(x -> exchange.getResponse()
-                .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(x.getBytes()))));
+                .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(x.getBytes()))))
+                .then(chain.handle(exchange));
 
     }
 
@@ -58,7 +60,7 @@ public class DirectPlugin extends AbstractGatewayPlugin {
     public boolean doSupport(ServerWebExchange exchange) {
         String path = exchange.getRequest().getPath().value();
         return (path.startsWith(prefix) ||
-                removeLastChar(path, '/').equals(removeLastChar(path, '/')));
+                removeLastChar(prefix, '/').equals(removeLastChar(path, '/')));
     }
 
     @Override
