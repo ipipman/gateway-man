@@ -57,7 +57,6 @@ class GatewayManApplicationTests {
         );
     }
 
-
     @Test
     void contextLoads() {
         System.out.println("gateway demo running ... ");
